@@ -1,0 +1,194 @@
+﻿@inherits LayoutComponentBase
+@using AppBank.Components
+
+<div class="bb-page">
+
+	<Sidebar @ref="sidebar"
+			 IconName="IconName.Bank2"
+			 Title="Internet Bank"
+			 DataProvider="SidebarDataProvider" />
+
+
+	<main>
+		
+		<div class="bb-top-row px-4 d-flex justify-content-between">
+			<Icon Name="IconName.List" role="button" @onclick="ToogleSidebar" />
+			<div class="">
+				<a href="#" target="_blank" style="color:black"><Icon Name="IconName.QuestionCircle" /></a>
+				<a href="#" target="_blank" style="margin-left: 20px; color: black;"><Icon Name="IconName.Bell" /></a>
+			</div>
+
+		</div>
+
+		<article class="content px-4">
+			<div class="py-2">
+				@Body
+			</div>
+		</article>
+	</main>
+
+</div>
+
+<style>
+	.dashboard-item {
+		padding-top: 15px;
+		background-color: transparent;
+		color: black;
+	}
+</style>
+
+<Modal IsServiceModal="true" />
+<Preload />
+<Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
+@code {
+	
+	private Sidebar sidebar = default!;
+	bool applyPurpleStyle = false;
+	private IEnumerable<NavItem> navItems = default!;
+
+	private async Task<SidebarDataProviderResult> SidebarDataProvider(SidebarDataProviderRequest request)
+	{
+		if (navItems is null)
+			navItems = GetNavItems();
+
+		return await Task.FromResult(request.ApplyTo(navItems));
+	}
+
+	private IEnumerable<NavItem> GetNavItems()
+	{
+		navItems = new List<NavItem>
+		{
+			new NavItem { Id = "1", Href="/dashboard", IconName = IconName.Grid3X3GapFill, Text = "Dashboard", Class = "dashboard-item" },
+           // new NavItem { Id = "1", Href = "/profile", IconName = IconName.HouseDoorFill, Text = "Profile" , Class="px-3"},
+
+            new NavItem { Id = "2", IconName = IconName.InboxesFill, Text = "Retail" },
+			new NavItem { Id = "3", Href = "/existinguser", IconName = IconName.PersonSquare, Text = "Users", ParentId="2"},
+			new NavItem { Id = "3", Href = "/newuser", IconName = IconName.PersonAdd, Text = "New User", ParentId="2"},
+			new NavItem { Id = "3", Href = "/awaitingapproval", IconName = IconName.ClockFill, Text = "Awaiting Approval", ParentId="2"},
+
+			new NavItem { Id = "4", IconName = IconName.PeopleFill, Text = "Corporate" },
+			new NavItem { Id = "5", Href = "#", IconName = IconName.PersonAdd, Text = "Newuser", ParentId="4"},
+			new NavItem { Id = "6", Href = "#", IconName = IconName.PersonCircle, Text = "Existinguser", ParentId="4"},
+			new NavItem { Id = "6", Href = "/awaitingapproval", IconName = IconName.ClockFill, Text = "Awaiting Approval", ParentId="4"},
+
+            new NavItem { Id = "12", Href = "#", IconName = IconName.GearFill, Text = "Settings"},
+
+
+			new NavItem { Id = "12", Href = "/configureuseraccount", IconName = IconName.BoxArrowRight, Text = "Log On"},
+			//new NavItem { Id = "8", IconName = IconName.WindowPlus, Text = "Forms", Class="upper" },
+
+			new NavItem { Id = "12", Href = "/switch", IconName = IconName.QuestionCircleFill, Text = "Help & Getting Started"},
+			new NavItem { Id = "12", Href = "/switch", IconName = IconName.BoxArrowRight, Text = "Log Out"}
+
+
+
+		};
+
+		return navItems;
+	}
+	private void ToogleSidebar() => sidebar.ToggleSidebar();
+}
+
+@{
+	bool applyPurpleStyle = false; // Set this to true or false based on your logic
+}
+
+<style>
+
+	.upper {
+		border-top: 1px solid #ccc;
+		padding-top: 0.5rem;
+		margin: 1rem;
+	}
+
+	.content {
+		position: relative;
+	}
+
+	.sidebar-separator {
+		border-top: 0.5px;
+		solid #ccc;
+		margin-bottom: 0;
+	}
+
+	.bottom-links {
+		margin-top: auto;
+	}
+
+	:root {
+		--bb-sidebar-width: @(applyPurpleStyle ? "270px" : "your-default-value");
+		--bb-sidebar-collapsed-width: @(applyPurpleStyle ? "50px" : "your-default-value");
+		--bb-sidebar-background-color: @(applyPurpleStyle ? "rgba(234, 234, 234, 1)" : "your-default-value");
+		--bb-sidebar-top-row-background-color: @(applyPurpleStyle ? " #d6d5d5" : "your-default-value");
+		--bb-sidebar-top-row-text: @(applyPurpleStyle ? "rgba()" : "your-default-value");
+		--bb-sidebar-nav-item-text-active-color: var(--bs-indigo),0.9);
+		--bb-sidebar-title-text-color: var(--bs-blue);
+		--bb-sidebar-brand-icon-color: var(--bs-blue);
+		--bb-sidebar-top-row-border-color: var(--bs-white);
+		--bb-sidebar-nav-item-text-active-color-rgb: 0.5,0.5,0.5;
+		/* --bb-sidebar-brand-icon-color: rgb(255,255,255);
+			/* Add other styles similarly based on your condition */
+	}
+
+
+	:root {
+		--bs-blue: #0d6efd;
+		--bs-indigo: #6610f2;
+		--bs-purple: #6f42c1;
+		--bs-pink: #d63384;
+		--bs-red: #dc3545;
+		--bs-orange: #fd7e14;
+		--bs-yellow: #ffc107;
+		--bs-green: #198754;
+		--bs-teal: #20c997;
+		--bs-cyan: #0dcaf0;
+		--bs-black: #000;
+		--bs-white: #fff;
+		--bs-gray: #6c757d;
+		--bs-gray-dark: #343a40;
+		--bs-gray-100: #f8f9fa;
+		--bs-gray-200: #e9ecef;
+		--bs-gray-300: #dee2e6;
+		--bs-gray-400: #ced4da;
+		--bs-gray-500: #adb5bd;
+		--bs-gray-600: #6c757d;
+		--bs-gray-700: #495057;
+		--bs-gray-800: #343a40;
+		--bs-gray-900: #212529;
+		--bs-primary: #0d6efd;
+		--bs-secondary: #6c757d;
+		--bs-success: #198754;
+		--bs-info: #0dcaf0;
+		--bs-warning: #ffc107;
+		--bs-danger: #dc3545;
+		--bs-light: #f8f9fa;
+		--bs-dark: #212529;
+		--bs-primary-rgb: 13,110,253;
+		--bs-secondary-rgb: 108,117,125;
+		--bs-success-rgb: 25,135,84;
+		--bs-info-rgb: 13,202,240;
+		--bs-warning-rgb: 255,193,7;
+		--bs-danger-rgb: 220,53,69;
+		--bs-light-rgb: 248,249,250;
+		--bs-dark-rgb: 33,37,41;
+		--bs-white-rgb: 255,255,255;
+		--bs-black-rgb: 0,0,0;
+		--bs-body-color-rgb: 33,37,41;
+		--bs-body-bg-rgb: 255,255,255;
+		--bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+		--bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+		--bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+		--bs-body-font-family: var(--bs-font-sans-serif);
+		--bs-body-font-size: 1rem;
+		--bs-body-font-weight: 400;
+		--bs-body-line-height: 1.5;
+	}
+</style>
+
+
+
+
+
+
+

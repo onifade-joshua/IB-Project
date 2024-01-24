@@ -1,0 +1,72 @@
+﻿@page "/existinguser"
+@using AppBank.Models
+@using AppBank.Components;
+
+<MainlayoutBreadcrumb CurrentPage="/existinguser"/>
+
+
+<div class="container">
+	<h5 class="mt-1">Users</h5>
+	
+	<div class="container-row mt-2">
+		<div class="row mt-2 justify-content-between">
+			<div class="col-md-5 col-sm-5 left">
+				<div class="input-group">
+					<input class="form-control" type="text" placeholder="Filter by FirstName or Username..." style="border-color: #e0e0de; font-size:14px;" />
+					<div class="input-group-append">
+						<span class="input-group-text">
+							<Icon Name="IconName.Search" />
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-7 col-sm-7 right">
+				
+				<div class="d-flex justify-content-end" style="margin-right: 10PX;">
+					<NavLink href="/stepcontrol" class="btn" style="text-decoration: none;">
+						<Button Color="ButtonColor.Light" TooltipTitle="Add new" TooltipPlacement="TooltipPlacement.Top" Outline="true">
+							<Icon Name="IconName.PersonPlus" /> Add new
+						</Button>
+					</NavLink>
+
+					<Dropdown Direction="DropdownDirection.DropupCentered">
+						<DropdownToggleButton Color="ButtonColor.Light" style="background-color:#fff; color: grey;">Action</DropdownToggleButton>
+						<DropdownMenu>
+							<DropdownItem To="#" Type="ButtonType.Link">Edit</DropdownItem>
+							<DropdownItem To="#" Type="ButtonType.Link">Delete</DropdownItem>
+							<DropdownItem To="#" Type="ButtonType.Link">Settings</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<Grid TItem="User" class="table table-hover table-striped" DataProvider="UsersDataProvider" AllowPaging="true" PageSize="8" Responsive="true" PageSizeSelectorItems="new[] { 10, 25, 50, 100 }" HeaderRowCssClass=" border-bottom-0" style="font-size:13px;">
+
+		<GridColumn TItem="User" HeaderText="First Name" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.FirstName
+		</GridColumn>
+		<GridColumn TItem="User" HeaderText="Last Name" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.LastName
+		</GridColumn>
+		<GridColumn TItem="User" HeaderText="Email" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.Email
+		</GridColumn>
+		<GridColumn TItem="User" HeaderText="Phone No" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.PhoneNo
+		</GridColumn>
+		<GridColumn TItem="User" HeaderText="Username" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.Username
+		</GridColumn>
+		<GridColumn TItem="User" HeaderText="Account" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.NoOfAccount
+		</GridColumn>
+		<GridColumn TItem="User"  HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+			@context.Action
+		</GridColumn>
+	</Grid>
+
+</div>

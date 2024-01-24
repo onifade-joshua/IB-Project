@@ -1,0 +1,68 @@
+﻿@page "/configureuseraccount"
+@using AppBank.Models
+@inherits ComponentBase
+
+
+
+<form class="container mb-2 mt-2">
+    <div class="card mt-3">
+        <div class="card-body custom-card-body">
+            <h6 class="card-title mt-2 mb-3">Account Number | Account Name</h6>
+
+            <!-- User Information Section -->
+            <div class="user-info">
+                <dl class="row">
+                    <div class="col-sm-3">
+                        <dt class="text">Customer ID</dt>
+                        <dd class="summary-top">45678</dd>
+                    </div>
+                    <div class="col-sm-3">
+                        <dt class="text">Account Type</dt>
+                        <dd class="summary-top">Savings</dd>
+                    </div>
+                    <div class="col-sm-3">
+                        <dt class="text">Product Type</dt>
+                        <dd class="summary-top">Banking</dd>
+                    </div>
+                    <div class="col-sm-3">
+                        <dt class="text">Currency</dt>
+                        <dd class="summary-top">USD</dd>
+                    </div>
+                </dl>
+            </div>
+            <!-- Permissions and Account Limit Section -->
+            <div class="permissions-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Permission" class="mb-2">Permission</label>
+                            <div class="input-group">
+                                <select class="form-control" id="Permission">
+                                    <option value="Transfer">Transfer</option>
+                                    <option value="Deposit">Deposit</option>
+                                    <option value="Withdrawal">Withdrawal</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="bi bi-chevron-down"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="AccountLimit" class="mb-2">Account Limit</label>
+                            <div class="input-group">
+                                <select class="form-control" id="AccountLimit">
+                                    <option value="200000">200000</option>
+                                    <option value="500000">500000</option>
+                                    <option value="3000000">3000000</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

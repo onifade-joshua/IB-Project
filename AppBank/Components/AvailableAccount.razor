@@ -1,0 +1,73 @@
+﻿	@using AppBank.Models
+	@using AppBank.Pages
+
+
+	<div class="container" style="font-size:14px;">
+		<div class="row">
+
+		<div class="col-md-6">
+				<h6>Availabe Accounts</h6>
+				<Grid TItem="User"
+					  Class="table table-hover table-striped"
+				      DataProvider="AvailableUserDataProvider"
+					  SelectionMode="GridSelectionMode.Multiple"
+					  AllowSelection="true"
+					  SelectedItemsChanged="OnAvailableSelectedItemsChanged"
+					  FixedHeader="true"
+					  Height="300"
+					  Responsive="true"
+					  Unit="Unit.px">
+
+					<GridColumn TItem="User" HeaderText="Account No" PropertyName="AccountNo">
+						@context.AccountNo
+					</GridColumn>
+					<GridColumn TItem="User" HeaderText="Account Name" PropertyName="AccountName">
+						@context.AccountName
+					</GridColumn>
+					<GridColumn TItem="User" HeaderText="Currency" PropertyName="Currency">
+						@context.Currency
+					</GridColumn>
+				</Grid>
+				
+				<div class="d-flex justify-content-end mt-3">
+					<Button Color="ButtonColor.Light" Outline="true" class="btn btn-block text-nowrap btnn" style="color: #5f615f; width: 100px;">
+						Add
+					</Button>
+				</div>
+			</div>
+
+			<!--Selected account markup-->
+			<div class="col-md-6">
+				<h6>Selected Accounts</h6>
+				<Grid TItem="User"
+					  Class="table table-hover table-striped"
+					  DataProvider="SelectedUserDataProvider"
+					  SelectionMode="GridSelectionMode.Multiple"
+					  AllowSelection="true"
+					  SelectedItemsChanged="OnSelectedSelectedItemsChanged"
+					  FixedHeader="true"
+					  Height="300"
+					  Responsive="true"
+					  Unit="Unit.px">
+
+					<GridColumn TItem="User" HeaderText="Account No" PropertyName="AccountNo">
+						@context.AccountNo
+					</GridColumn>
+					<GridColumn TItem="User" HeaderText="Account Name" PropertyName="AccountName">
+						@context.AccountName
+					</GridColumn>
+					<GridColumn TItem="User" HeaderText="Currency" PropertyName="Currency">
+						@context.Currency
+					</GridColumn>
+				</Grid>
+				
+				<div class="d-flex justify-content-end mt-3">
+					<Button Color="ButtonColor.Light" Outline="true" class="btn btn-block text-nowrap btnn" style="color: #5f615f;">
+						Remove
+					</Button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	

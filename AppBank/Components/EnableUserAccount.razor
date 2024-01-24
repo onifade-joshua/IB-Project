@@ -1,0 +1,109 @@
+﻿@page "/enableuseraccount"
+
+
+<div class="row">
+	<div class="col-md-4">
+		<h5 class="info-title-head">Nominated Account:</h5>
+	</div>
+	<div class="col-md-8">
+			<EditForm Model="@User">
+				<DataAnnotationsValidator />
+				<div class="form-group mb-2 mr-2">
+					<div class="input-group">
+						<InputSelect class="form-control" @bind-Value="User.SelectedOption">
+						<option value="ABN Amro USD Nostro">ABN Amro USD Nostro</option>
+						<option value="ABN Amro PUD Nostro">ABN Amro PUD Nostro</option>
+						<option value="ABN Amro YEN Nostro">ABN Amro YEN Nostro</option>
+						</InputSelect>
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<i class="bi bi-chevron-down"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</EditForm>
+	</div>
+
+	<!--Account Table1-->
+	<div class="col-md-12">
+		<table class="table table-hover table-bordered table-striped" style="color: grey; width:100%; border-collapse: collapse;
+      width: 100%;">
+			<thead>
+				<tr class="font">
+					<th>No</th>
+					<th>Account No</th>
+					<th>Account Name</th>
+					<th>Customer ID</th>
+					<th>Account Type</th>
+					<th>Product Type</th>
+					<th>Currency</th>
+					<th>Permission</th>
+					<th>Account Limit</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text">1</td>
+					<td class="text">2288945632</td>
+					<td class="text">ABM Joshua amid</td>
+					<td class="text">11017</td>
+					<td class="text">Nastro Account Bank</td>
+					<td class="text">Re</td>
+					<td class="text">USD</td>
+					<td class="text">
+						<div class="custom-select">
+							<select>
+								<option value="Transfer">Transfer</option>
+								<option value="Deposit">Deposit</option>
+								<option value="Withdrawal">Withdrawal</option>
+							</select>
+						</div>
+					</td>
+					<td class="text">
+						<div class="custom-select">
+							<select>
+								<option value="50000">50000</option>
+								<option value="25300">25300</option>
+								<option value="1000000">1000000</option>
+							</select>
+						</div>
+					</td>
+					<td class="text">True</td>
+				</tr>
+				<!--Second-->
+				<tr>
+					<td class="text">2</td>
+					<td class="text">2288945632</td>
+					<td class="text">ABM Adewale amid</td>
+					<td class="text">11017</td>
+					<td class="text">Mastro Account Bank</td>
+					<td class="text">Re</td>
+					<td class="text">YEN</td>
+					<td class="text">
+						<div class="custom-select">
+							<select>
+								<option value="Transfer">Transfer</option>
+								<option value="Deposit">Deposit</option>
+								<option value="Withdrawal">Withdrawal</option>
+							</select>
+						</div>
+					</td>
+					<td class="text">
+						<div class="custom-select">
+							<select>
+								<option value="50000">50000</option>
+								<option value="25300">25300</option>
+								<option value="1000000">1000000</option>
+							</select>
+						</div>
+					</td>
+					<td class="text">True</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</div>

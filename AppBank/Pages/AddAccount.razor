@@ -1,0 +1,57 @@
+@page "/addaccount"
+@inherits LayoutComponentBase
+@using AppBank.Models
+@using AppBank.Components
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+
+<div class="container">
+    <div class="row d-flex mt-3">
+        <div class="col-md-3">
+
+            <EditForm Model="@user">
+                <DataAnnotationsValidator />
+                <div class="form-group mb-2 mr-2">
+                    <InputNumber @bind-Value=user.CustomerId class="form-control" id="AddCutomerId" />
+                </div>
+            </EditForm>
+        </div>
+        <div class="col-md-8">
+            <Button Color="ButtonColor.Light" Outline="true" class="btn btn-block text-nowrap btnn" style="color: #5f615f;" @onclick="AddCustomerIdAction">
+                <Icon Name="IconName.PlusCircle" /> Add Customer ID
+            </Button>
+        </div>
+
+        <div class="col-md-3 mt-1">
+            <EditForm Model="@user">
+                <DataAnnotationsValidator />
+                <div class="form-group mb-2 mr-2">
+                    <div class="input-group">
+                        <InputSelect @bind-Value=user.CustomerId class="form-control" id="AddCustomerId">
+                            <option value="594567">594567</option>
+                            <option value="114550">114550</option>
+                            <option value="204780">204780</option>
+                        </InputSelect>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="bi bi-chevron-down"></i> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+
+        <div class="col-md-8 mt-1">
+            <Button Color="ButtonColor.Light" Outline="true" class="btn btn-block text-nowrap btnn" style="color:#5f615f;" @onclick="ShowCustomerIDAction">
+                Customer ID
+            </Button>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <AvailableAccount />
+    </div>
+</div>
+
+

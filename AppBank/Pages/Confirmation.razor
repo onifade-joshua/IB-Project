@@ -1,0 +1,30 @@
+﻿@page "/confirmation"
+@inject NavigationManager NavigationManager
+
+<div class="confirmation-message">
+    <div class="box">
+        <div class="row header">
+            <div class="col-md-12">
+                <div class="header text-center">
+                    <img src="Verified_img.png" class="img" />
+                </div>
+            </div>
+        </div>
+
+        <div class="user-details with-50">
+            <p><strong>Name:</strong> Onifade Joshua Abiodun</p>
+            <p><strong>Username:</strong> Joshua23</p>
+            <p><strong>Email:</strong> onifadejoshua15@gmail.com</p>
+            <p><strong>Phone Number:</strong> 08135376994</p>
+        </div>
+
+        <h5 class="confirm-title" style="text-align: center;">User Successfully Created</h5>
+        <h5 class="confirm-title" style="text-align: center;">Awaiting Approval!</h5>
+
+        <div class="text-center">
+            <button class="btn btn-primary" @onclick="NavigateToDashboard">
+                <a href="/dashboard" class="btn-okay">Okay</a>
+            </button>
+        </div>
+    </div>
+</div>

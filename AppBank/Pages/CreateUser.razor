@@ -1,0 +1,53 @@
+﻿@page "/createuser"
+@inherits ComponentBase
+
+
+<EditForm Model="@User" OnValidSubmit="OnValidSubmitHandler" style="width: 350px;">
+	<DataAnnotationsValidator />
+	<div class="form-group mb-2">
+		<label for="FirstName" class="mb-2">First Name</label>
+		<InputText @bind-Value=User.FirstName class="form-control" id="FirstName" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="LastName" class="mb-2">Last Name</label>
+		<InputText @bind-Value=User.LastName class="form-control" id="LastName" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="MiddleName" class="mb-2">Middle Name</label>
+		<InputText @bind-Value=User.MiddleName class="form-control" id="MiddleName" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="Email" class="mb-2">Email</label>
+		<InputText @bind-Value=User.Email class="form-control" id="Email" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="PhoneNo" class="mb-2">Phone Number</label>
+		<InputNumber @bind-Value=User.PhoneNo class="form-control" id="PhoneNo" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="MemorableWord" class="mb-2">Memorable Word</label>
+		<InputText @bind-Value=User.MemorableWord class="form-control" id="MemorableWord" />
+
+	</div>
+	<div class="form-group mb-2">
+		<label for="DeliveryMethod" class="mb-2">Delivery Method</label>
+		<div class="input-group">
+			<InputSelect @bind-Value=User.DeliveryMethod class="form-control" id="DeliveryMethod" style="font-size: 13px;">
+				<option value="FedExpress">FedExpress</option>
+				<option value="ShipExpress">ShipExpress</option>
+				<option value="Store">Store</option>
+			</InputSelect>
+			<div class="input-group-append">
+				<div class="input-group-text">
+					<i class="bi bi-chevron-down"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</EditForm>

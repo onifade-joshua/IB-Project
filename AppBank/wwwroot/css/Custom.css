@@ -1,0 +1,209 @@
+﻿/*Wizard Css Style*/
+.side-link {
+    border-bottom: 1px solid #ccc;
+    padding-top: 1.5rem;
+    font-size: 10px;
+    position: relative;
+}
+
+.active, .Title {
+    font-weight: bolder;
+    color: black;
+}
+
+    .active::before, .Title::before {
+        content: '';
+        position: absolute;
+    }
+
+.main {
+    font-size: 10px;
+}
+
+.btn1, .btn2{
+    color: #fff
+}
+/*Add Account Css Styles*/
+.btnn, .btn {
+    border: none;
+    color: dimgrey;
+}
+
+.btnn:hover {
+    background-color: #e0e0de;
+}
+/*Form color*/
+.mb-2 {
+    color: #48494a;
+}
+
+/*User Styles*/
+
+
+/*Confirmation Css Style*/
+.box {
+    /*border: 2px solid #8d918e;*/
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 1.5rem;
+    width: 70%;
+    height: 70vh;
+    margin-top: 1.5rem;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+    .box:hover {
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.8);
+    }
+
+.img {
+    width: 70%;
+    display: flex; 
+    justify-content: end;
+}
+
+.confirm-title {
+    font-size: 25px;
+    color: grey;
+    text-align: center;
+    margin-top: 1rem;
+    line-height: 2rem;
+}
+
+.header {
+    margin-bottom: 1.3rem;
+    margin-top: 1.8rem;
+    align-content: center;
+}
+
+.btn-okay {
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+
+    .btn-okay:hover {
+        color: #fff;
+    }
+
+p {
+    color: grey;
+    font-size: 14px;
+}
+
+.user-details {
+    margin-top: 2rem;
+}
+
+/*Confirmation Review Css Styles*/
+.text {
+    color: dimgrey;
+}
+
+.summary-top {
+    margin-top: 0.2rem;
+    color: dimgrey;
+}
+
+.info-title-head {
+    color: dimgrey;
+    margin-top: 0.5rem;
+}
+
+td {
+    color: #3e3f40;
+}
+
+/*User Css Style*/
+/*.btn {
+    border: none;
+    color: gray;
+}
+*/
+
+/*Enable Account Styles*/
+.table{
+    font-size: 13px;
+    margin-top: 1rem;
+}
+
+/* Style for the custom input */
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+    /* Style for the select box */
+    .custom-select select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Style for the arrow icon */
+    .custom-select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+
+th, td {
+   
+    padding: 8px;
+    text-align: left;
+    vertical-align: top; /* Set vertical-align to top */
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/*Configure Styles*/
+.custom-card-body {
+    padding: 1rem; /* Adjust the padding as needed */
+}
+.container {
+    width: 100%;
+}
+
+.card {
+    width: 100%;
+    height: auto;
+}
+
+.custom-card-body {
+    padding: 20px;
+}
+.user-info {
+    margin-bottom: 20px;
+}
+/*.permissions-section {
+   
+}
+*/
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.col-md-6 {
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+}
+
+.input-group {
+    width: 100%;
+}
+
