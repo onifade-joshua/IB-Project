@@ -1,49 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using AppBank.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace AppBank.Components
 {
-    public partial class Wizard
-    {
-
+	public partial class Wizard
+	{
         [Parameter] public List<WizardStep> Steps { get; set; }
-        public int ActiveIndex { get; private set; } = 1;
-        private bool prevDisabled;
-        private bool nextDisabled;
+        public int ActiveIndex { get; private set; } = 0;
 
-        private WizardStep CurrentStep => Steps.FirstOrDefault(s => s.Index == ActiveIndex);
+        private bool prevDisabled => ActiveIndex == 0;
+        private bool nextDisabled => !ValidateForm();
+
+        private WizardStep CurrentStep => Steps[ActiveIndex];
+
+        public async Task Next()
+        {
+            if (!nextDisabled)
+            {
+                if (ActiveIndex < Steps.Count - 1)
+                {
+                    ActiveIndex++;
+                    StateHasChanged();
+                }
+                else
+                {
+                    Console.WriteLine("Step's completed!");
+                }
+            }
+        }
 
         public void Previous()
         {
-            ActiveIndex--;
-            if (ActiveIndex < 1)
+            if (ActiveIndex > 0)
             {
-                ActiveIndex = 1;
+                ActiveIndex--;
             }
-            UpdateBar();
         }
 
-        public void Next()
+        private bool ValidateForm()
         {
-            ActiveIndex++;
-            if (ActiveIndex > Steps.Count)
+            var editContext = new EditContext(CurrentStep.Model);
+
+            // Check if the form is valid
+            if (!editContext.Validate())
             {
-                ActiveIndex = Steps.Count;
+                // If the form is not valid, display validation messages
+                editContext.OnValidationStateChanged += (sender, eventArgs) =>
+                {
+                    StateHasChanged();
+                };
+                return false;
             }
-            UpdateBar();
-        }
 
-        private void UpdateBar()
-        {
-            foreach (var step in Steps)
+            // Check if there are any required fields that are empty
+            foreach (var prop in CurrentStep.Model.GetType().GetProperties())
             {
-                step.IsActive = step.Index == ActiveIndex;
-            }    // To Add logic to update UI elements based on ActiveIndex
-                 // For example, update the active class for the navigation steps.
-            StateHasChanged();
-        }
+                if (prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0)
+                {
+                    var value = prop.GetValue(CurrentStep.Model);
+                    if (value == null || (value is string && string.IsNullOrWhiteSpace((string)value)))
+                    {
+                        return false;
+                    }
+                }
+            }
 
+            return true;
+        }
     }
 }

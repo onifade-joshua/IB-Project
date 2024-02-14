@@ -6,39 +6,40 @@
 <Wizard @ref="wizard" Steps="@wizardSteps" />
 
 @code {
-	protected override void OnInitialized()
-	{
-		wizardSteps = new List<WizardStep>
-		{
-			new WizardStep
-			{
-				Index = 1,
-				Title = "Create User",
-				Content = @<CreateUser User="@User" OnValidSubmit="HandleValidSubmit" />
-			},
+    protected override void OnInitialized()
+    {
+        wizardSteps = new List<WizardStep>
+        {
+            new WizardStep
+            {
+                Index = 1,
+                Title = "Create User",
+                Content = @<CreateUser User="@User" OnValidSubmit="OnValidSubmitHandler" />
+            },
 
-			new WizardStep
-			{
-				Index = 2,
-				Title = "Add Customer ID & Account",
-				Content = @<AddAccount User="@User" />
-			},
-			
-			new WizardStep
-			{
-				Index = 3,
-				Title = "Configure User Account",
-				Content = @<ConfigureAccount />
-			},
+            new WizardStep
+            {
+                Index = 2,
+                Title = "Add Customer ID & Account",
+                Content = @<AddAccount User="@User" />
+            },
 
-			new WizardStep
-			{
-				Index = 4,
-				Title = "Confirmation Review",
-				Content = @<ConfirmationReview User="@User" />
-			},
-		};
+            new WizardStep
+            {
+                Index = 3,
+                Title = "Configure User Account",
+                Content = @<ConfigureAccount />
+            },
 
-		base.OnInitialized();
-	}
+            new WizardStep
+            {
+                Index = 4,
+                Title = "Confirmation Review",
+                Content = @<ConfirmationReview User="@User" />
+            },
+        };
+
+        base.OnInitialized();
+    }
+
 }

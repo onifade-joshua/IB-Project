@@ -1,88 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AppBank.Models;
 using BlazorBootstrap;
+using Microsoft.Extensions.Http;
+using Microsoft.AspNetCore.Components; 
 
 namespace AppBank.Components
 {
     public partial class AvailableAccount
     {
-        private IEnumerable<User> availableUsers = default!;
-        private IEnumerable<User> selectedUsers = default!;
+        private IEnumerable<Account> availableUsers = default!;
+        private IEnumerable<Account> selectedUsers = default!;
+        private readonly IHttpClientFactory httpClientFactory;
+        private HttpClient httpClient;
 
-        public async Task<GridDataProviderResult<User>> AvailableUserDataProvider(GridDataProviderRequest<User> request)
+        public AvailableAccount()
+        {
+            
+        }
+
+        [Inject]
+        public IHttpClientFactory HttpClientFactory { get; set; }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            httpClient = HttpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri("https://localhost:7027/"); 
+        }
+        public async Task<GridDataProviderResult<Account>> AvailableUserDataProvider(GridDataProviderRequest<Account> request)
         {
             Console.WriteLine("AvailableUserDataProvider called...");
 
             if (availableUsers is null)
-                availableUsers = GetAvailableUsers();
+                availableUsers = await GetAvailableUsers();
 
             return await Task.FromResult(request.ApplyTo(availableUsers));
         }
 
-        public async Task<GridDataProviderResult<User>> SelectedUserDataProvider(GridDataProviderRequest<User> request)
+        public async Task<GridDataProviderResult<Account>> SelectedUserDataProvider(GridDataProviderRequest<Account> request)
         {
             Console.WriteLine("SelectedUserDataProvider called...");
 
             if (selectedUsers is null)
-                selectedUsers = GetSelectedUsers();
+                selectedUsers = await GetSelectedUsers();
 
             return await Task.FromResult(request.ApplyTo(selectedUsers));
         }
 
-        public IEnumerable<User> GetAvailableUsers()
+        public async Task<IEnumerable<Account>> GetAvailableUsers()
         {
-            return new List<User>
-            {
-			    new User { AccountNo = "0940353267", AccountName = "Alice John",  Currency = "USD" },
-				new User { AccountNo = "0140443267", AccountName = "Motunrayo Mutiu", Currency = "EU"},
-				new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234", AccountName = "George Philip", Currency = "ZAR" },
-				new User { AccountNo = "5040353288", AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-				new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-				new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-				new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-				new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-				new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-			};
+            var response = await httpClient.GetFromJsonAsync<List<Account>>("api/Account/getbycustomerid/123456");
+            return response ?? new List<Account>();
         }
 
-        public IEnumerable<User> GetSelectedUsers()
+        public async Task<IEnumerable<Account>> GetSelectedUsers()
         {
-            return new List<User>
-            {
-                new User { AccountNo = "0940353267", AccountName = "Alice John",  Currency = "USD" },
-                new User { AccountNo = "0140443267", AccountName = "Motunrayo Mutiu", Currency = "EU"},
-                new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234", AccountName = "George Philip", Currency = "ZAR" },
-                new User { AccountNo = "5040353288", AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-                new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-                new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-                new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-                new User { AccountNo = "5040353288",  AccountName = "Grace Jones", Currency = "GBP" },
-                new User { AccountNo = "6040353234",  AccountName = "George Philip", Currency = "ZAR" },
-            };
+            var response = await httpClient.GetFromJsonAsync<List<Account>>("api/Account/getbycustomerid/123456");
+            return response ?? new List<Account>();
         }
-
-        public Task OnAvailableSelectedItemsChanged(HashSet<User> users)
+        public Task OnAvailableSelectedItemsChanged(HashSet<Account> accounts)
         {
-          
             return Task.CompletedTask;
         }
 
-        public Task OnSelectedSelectedItemsChanged(HashSet<User> users)
+        public Task OnSelectedSelectedItemsChanged(HashSet<Account> accounts)
         {
-            
             return Task.CompletedTask;
         }
     }
