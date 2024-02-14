@@ -11,7 +11,14 @@ namespace AppBank.Pages
 
         private async Task OnValidSubmitHandler(EditContext editContext)
         {
-            await OnValidSubmit.InvokeAsync(editContext);
+            if (editContext.Validate())
+            {
+                await OnValidSubmit.InvokeAsync(editContext);
+            }
+            else
+            {
+                Console.WriteLine("Validation error: Please fill in the right details.");
+            }
         }
     }
 }

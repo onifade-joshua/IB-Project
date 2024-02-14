@@ -16,5 +16,6 @@ namespace AppBank.Models
 		public bool ShowTitleInContent { get; set; } = true;
 		[Required]
 		public bool User { get; internal set; }
+		public object Model { get; set; } = string.Empty;
     }
 }
