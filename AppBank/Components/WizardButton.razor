@@ -1,0 +1,8 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+<div class="d-flex">
+    <button type="button" class="btn btn-primary btn1" @onclick="Previous" id="prev" disabled="@IsFirstStep">Previous</button>
+    <button type="button" class="btn btn-primary btn2" @onclick="Next" id="next" disabled="@(!IsFormValid)">@NextButtonText</button>
+</div>
+
+

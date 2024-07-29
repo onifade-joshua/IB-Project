@@ -1,76 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AppBank.Models;
-using BlazorBootstrap;
-using Microsoft.Extensions.Http;
-using Microsoft.AspNetCore.Components; 
+using AppBank.Interfaces;
+using Microsoft.AspNetCore.Components;
 
 namespace AppBank.Components
 {
     public partial class AvailableAccount
     {
-        private IEnumerable<Account> availableUsers = default!;
-        private IEnumerable<Account> selectedUsers = default!;
-        private readonly IHttpClientFactory httpClientFactory;
-        private HttpClient httpClient;
+        public List<Account> AvailableUsers { get; set; } = new List<Account>();
+        [Parameter]
+        public string SelectedCustomerId { get; set; } = default!;
+        public bool DisplayTable { get; set; } = false;
+        public bool SelectAll { get; set; }
+        public List<Account> SelectedAccounts { get; set; } = new List<Account>();
 
-        public AvailableAccount()
+        protected override async Task OnParametersSetAsync()
         {
-            
+            await ShowCustomerIDAction();
         }
 
-        [Inject]
-        public IHttpClientFactory HttpClientFactory { get; set; }
-
-        protected override void OnInitialized()
+        private async Task ShowCustomerIDAction()
         {
-            base.OnInitialized();
-            httpClient = HttpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri("https://localhost:7027/"); 
-        }
-        public async Task<GridDataProviderResult<Account>> AvailableUserDataProvider(GridDataProviderRequest<Account> request)
-        {
-            Console.WriteLine("AvailableUserDataProvider called...");
+            try
+            {
+                var accounts = await CoreAccountService.GetAccountsByCustomerId(SelectedCustomerId);
 
-            if (availableUsers is null)
-                availableUsers = await GetAvailableUsers();
-
-            return await Task.FromResult(request.ApplyTo(availableUsers));
-        }
-
-        public async Task<GridDataProviderResult<Account>> SelectedUserDataProvider(GridDataProviderRequest<Account> request)
-        {
-            Console.WriteLine("SelectedUserDataProvider called...");
-
-            if (selectedUsers is null)
-                selectedUsers = await GetSelectedUsers();
-
-            return await Task.FromResult(request.ApplyTo(selectedUsers));
+                if (accounts != null)
+                {
+                    AvailableUsers = accounts;
+                    DisplayTable = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
 
-        public async Task<IEnumerable<Account>> GetAvailableUsers()
+        private void MoveAccounts()
         {
-            var response = await httpClient.GetFromJsonAsync<List<Account>>("api/Account/getbycustomerid/123456");
-            return response ?? new List<Account>();
+            var selectedAccounts = AvailableUsers.Where(a => a.Selected).ToList();
+            SelectedAccounts.AddRange(selectedAccounts);
+            AvailableUsers.RemoveAll(a => a.Selected);
+            StateHasChanged();
         }
 
-        public async Task<IEnumerable<Account>> GetSelectedUsers()
+        private void DeleteAccounts()
         {
-            var response = await httpClient.GetFromJsonAsync<List<Account>>("api/Account/getbycustomerid/123456");
-            return response ?? new List<Account>();
-        }
-        public Task OnAvailableSelectedItemsChanged(HashSet<Account> accounts)
-        {
-            return Task.CompletedTask;
+            SelectedAccounts.RemoveAll(a => a.Selected);
+            StateHasChanged();
         }
 
-        public Task OnSelectedSelectedItemsChanged(HashSet<Account> accounts)
+        private void ToggleSelectAll()
         {
-            return Task.CompletedTask;
+            foreach (var account in AvailableUsers)
+            {
+                account.Selected = SelectAll;
+            }
+            StateHasChanged();
+        }
+
+        private void ToggleSelectAllSelected()
+        {
+            foreach (var account in SelectedAccounts)
+            {
+                account.Selected = SelectAll;
+            }
+            StateHasChanged();
         }
     }
 }

@@ -2,44 +2,24 @@
 @using AppBank.Models
 @using AppBank.Components
 
+<EditForm EditContext="@editContext" OnValidSubmit="@Next" class="wizard-form">
+    <Wizard @ref="wizard" Steps="@wizardSteps" OnLastStepCompleted="@OnWizardNext" />
+    <ToastNotification />
 
-<Wizard @ref="wizard" Steps="@wizardSteps" />
+    <div class="d-flex" style="justify-content:flex-end; margin-top: 3.5rem;">
+        <button type="button" class="btn btn-primary btn1" @onclick="Previous" id="prev" disabled="@prevDisabled" style="margin-right:10px; color:#fff;">Previous</button>
+        <button type="submit" class="btn btn-primary btn2" id="next" style="margin-left:10px;color: #fff;">Proceed</button>
+    </div>
+</EditForm>
 
-@code {
-    protected override void OnInitialized()
-    {
-        wizardSteps = new List<WizardStep>
-        {
-            new WizardStep
-            {
-                Index = 1,
-                Title = "Create User",
-                Content = @<CreateUser User="@User" OnValidSubmit="OnValidSubmitHandler" />
-            },
 
-            new WizardStep
-            {
-                Index = 2,
-                Title = "Add Customer ID & Account",
-                Content = @<AddAccount User="@User" />
-            },
-
-            new WizardStep
-            {
-                Index = 3,
-                Title = "Configure User Account",
-                Content = @<ConfigureAccount />
-            },
-
-            new WizardStep
-            {
-                Index = 4,
-                Title = "Confirmation Review",
-                Content = @<ConfirmationReview User="@User" />
-            },
-        };
-
-        base.OnInitialized();
+<style>
+    .wizard-form {
+        max-width: 100%;
+        overflow-x: hidden; 
     }
 
-}
+        .wizard-form .d-flex {
+            flex-wrap: wrap; 
+        }
+</style>

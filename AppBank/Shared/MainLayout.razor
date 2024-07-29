@@ -29,13 +29,6 @@
 
 </div>
 
-<style>
-	.dashboard-item {
-		padding-top: 15px;
-		background-color: transparent;
-		color: black;
-	}
-</style>
 
 <Modal IsServiceModal="true" />
 <Preload />
@@ -79,7 +72,7 @@
 			//new NavItem { Id = "8", IconName = IconName.WindowPlus, Text = "Forms", Class="upper" },
 
 			new NavItem { Id = "12", Href = "/switch", IconName = IconName.QuestionCircleFill, Text = "Help & Getting Started"},
-			new NavItem { Id = "12", Href = "/switch", IconName = IconName.BoxArrowRight, Text = "Log Out"}
+			new NavItem { Id = "12", Href = "#", IconName = IconName.BoxArrowRight, Text = "Log Out"}
 
 
 
@@ -95,7 +88,11 @@
 }
 
 <style>
-
+	.dashboard-item {
+		padding-top: 15px;
+		background-color: transparent;
+		color: black;
+	}
 	.upper {
 		border-top: 1px solid #ccc;
 		padding-top: 0.5rem;

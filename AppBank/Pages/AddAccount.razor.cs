@@ -1,48 +1,107 @@
-﻿using AppBank.Components;
+﻿using AppBank.Interfaces;
 using AppBank.Models;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppBank.Pages
 {
     public partial class AddAccount
     {
         [Parameter]
-        public User user { get; set; } = new User();
-        private IEnumerable<User> users;
-        private Wizard wizard;
-        private List<WizardStep> wizardSteps;
+        public User? User { get; set; }
 
-        public AddAccount()
-        {
-        }
+        [Parameter]
+        public Account Account { get; set; } = new Account();
+        private List<string> CustomerIds { get; set; } = new List<string>();
 
-        private void AddCustomerId()
-        {
-            user.AddedCustomerIds.Add(user.CustomerId);
-            user.CustomerId = 0;
-        }
+        [Inject]
+        public ICoreAccountService? CoreAccountService { get; set; }
+        public string? SelectedCustomerId { get; set; }
+        public IEnumerable<Account> AvailableUsers { get; set; } = new List<Account>();
 
-        private void ShowCustomerID()
+        protected override async Task OnInitializedAsync()
         {
-            foreach (var addedCustomerId in user.AddedCustomerIds)
+            var customerIds = await FetchCustomerIdsAsync();
+            if (customerIds.Any())
             {
-                Console.WriteLine($"Added Customer ID: {addedCustomerId}");
-                // Or display it in a user interface element
+                CustomerIds = customerIds;
+            }
+            else
+            {
+                Console.WriteLine("Failed to fetch customer IDs.");
             }
         }
 
-        private void AddCustomerIdAction()
+        private async Task<List<string>> FetchCustomerIdsAsync()
         {
-            user.CustomerIds.Add(user.CustomerId);
-            user.CustomerId = 0;
+            try
+            {
+                return await CoreAccountService.GetUserCustomerIds();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching customer IDs: {ex.Message}");
+                return new List<string>();
+            }
         }
 
-        private void ShowCustomerIDAction()
+        private async Task ShowCustomerIDAction()
         {
-            foreach (var addedCustomerId in user.CustomerIds)
+            try
             {
-                Console.WriteLine($"Added Customer ID: {addedCustomerId}");
+                if (string.IsNullOrEmpty(SelectedCustomerId))
+                {
+                    Console.WriteLine("Selected Customer ID is null or empty.");
+                    return;
+                }
+
+                Console.WriteLine($"Fetching accounts for CustomerId: {SelectedCustomerId}");
+
+                var accounts = await CoreAccountService.GetAccountsByCustomerId(SelectedCustomerId);
+
+                if (accounts != null)
+                {
+                    AvailableUsers = accounts;
+                    StateHasChanged();
+                }
+                else
+                {
+                    Console.WriteLine("No accounts returned for the selected customer ID.");
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching accounts: {ex.Message}");
+            }
+        }
+
+        private async Task AddCustomerIdAction()
+        {
+            try
+            {
+                bool success = await CoreAccountService.AddNewCustomerId(Account.NewCustomerId);
+                if (success)
+                {
+                    CustomerIds.Add(Account.NewCustomerId);
+                    Account.NewCustomerId = string.Empty;
+                }
+                else
+                {
+                    Console.WriteLine("Failed to add new customer ID.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding customer ID: {ex.Message}");
+            }
+        }
+
+        private async Task OnCustomerIdChanged(ChangeEventArgs e)
+        {
+            SelectedCustomerId = e.Value?.ToString();
         }
     }
 }

@@ -1,53 +1,58 @@
 ﻿@page "/createuser"
 @inherits ComponentBase
+@using System.ComponentModel.DataAnnotations
+@using AppBank.Services
+@inject CoreAccountService CoreAccountService
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 
-<EditForm Model="@User" OnValidSubmit="OnValidSubmitHandler" style="width: 350px;">
-	<DataAnnotationsValidator />
-	<div class="form-group mb-2">
-		<label for="FirstName" class="mb-2">First Name</label>
-		<InputText @bind-Value=User.FirstName class="form-control" id="FirstName" />
-		<ValidationMessage For="@(() => User.FirstName)" style="color:red;" />
-	</div>
-	<div class="form-group mb-2">
-		<label for="LastName" class="mb-2">Last Name</label>
-		<InputText @bind-Value=User.LastName class="form-control" id="LastName" />
-		<ValidationMessage For="@(() => User.LastName)" style="color:red;" />
-	</div>
-	<div class="form-group mb-2">
-		<label for="MiddleName" class="mb-2">Middle Name</label>
-		<InputText @bind-Value=User.MiddleName class="form-control" id="MiddleName" />
-		<ValidationMessage For="@(() => User.MiddleName)" style="color:red;" />
-	</div>
-	<div class="form-group mb-2">
-		<label for="Email" class="mb-2">Email</label>
-		<InputText @bind-Value=User.Email class="form-control" id="Email" />
-		<ValidationMessage For="@(() => User.Email)" style="color:red;" />
-	</div>
-	<div class="form-group mb-2">
-		<label for="PhoneNo" class="mb-2">Phone Number</label>
-		<InputNumber @bind-Value=User.PhoneNo class="form-control" id="PhoneNo" />
-		<ValidationMessage For="@(() => User.PhoneNo)" style="color:red;" />
-	</div>
-	<div class="form-group mb-2">
-		<label for="MemorableWord" class="mb-2">Memorable Word</label>
-		<InputText @bind-Value=User.MemorableWord class="form-control" id="MemorableWord" />
-		<ValidationMessage For="@(() => User.MemorableWord)" style="color:red;"/>
-	</div>
-	<div class="form-group mb-2">
-		<label for="DeliveryMethod" class="mb-2">Delivery Method</label>
-		<div class="input-group">
-			<InputSelect @bind-Value=User.DeliveryMethod class="form-control" id="DeliveryMethod" style="font-size: 13px;">
-				<option value="FedExpress">FedExpress</option>
-				<option value="ShipExpress">ShipExpress</option>
-				<option value="Store">Store</option>
-			</InputSelect>
-			<div class="input-group-append">
-				<div class="input-group-text">
-					<i class="bi bi-chevron-down"></i>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!--<button type="submit" value="Save" class="btn1">OK</button>-->
-</EditForm>
+
+<div class="" style="width: 350px; min-height: 90vh;">
+    <div class="form-group mb-1">
+        <label for="FirstName" class="mb-2">First Name</label>
+        <InputText @bind-Value=User.FirstName class="form-control" id="FirstName" autocomplete="off" />
+        <ValidationMessage For="@(() => User.FirstName)" style="color:red;" />
+    </div>
+    <div class="form-group mb-1">
+        <label for="LastName" class="mb-2">Last Name</label>
+        <InputText @bind-Value=User.LastName class="form-control" id="LastName" autocomplete="off" />
+        <ValidationMessage For="@(() => User.LastName)" style="color:red;" />
+    </div>
+    <div class="form-group mb-1">
+        <label for="MiddleName" class="mb-2">Middle Name</label>
+        <InputText @bind-Value=User.MiddleName class="form-control" id="MiddleName" autocomplete="off" />
+        <ValidationMessage For="@(() => User.MiddleName)" style="color:red;" />
+    </div>
+    <div class="form-group mb-1">
+        <label for="Email" class="mb-2">Email</label>
+        <InputText @bind-Value=User.Email class="form-control" id="Email" autocomplete="off" />
+        <ValidationMessage For="@(() => User.Email)" style="color:red;" />
+    </div>
+    <div class="form-group mb-2">
+        <label for="PhoneNo" class="mb-2">Phone Number</label>
+        <InputText @bind-Value=User.PhoneNo class="form-control" id="PhoneNo" placeholder="+2348135576994" autocomplete="off" />
+        <ValidationMessage For="@(() => User.PhoneNo)" style="color:red;" />
+    </div>
+    <div class="form-group mb-1">
+        <label for="MemorableWord" class="mb-2">Memorable Word</label>
+        <InputText @bind-Value=User.MemorableWord class="form-control" id="MemorableWord" autocomplete="off" />
+        <ValidationMessage For="@(() => User.MemorableWord)" style="color:red;" />
+    </div>
+    <div class="form-group mb-1">
+        <label for="DeliveryMethod" class="mb-2">Delivery Method</label>
+        <div class="input-group">
+            <InputSelect @bind-Value=User.DeliveryMethod class="form-control" id="DeliveryMethod" style="font-size: 13px;">
+                <option value="FedExpress">FedExpress</option>
+                <option value="ShipExpress">ShipExpress</option>
+                <option value="Store">Store</option>
+            </InputSelect>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+        <ValidationMessage For="@(() => User.DeliveryMethod)" style="color:red;" />
+    </div>
+</div>

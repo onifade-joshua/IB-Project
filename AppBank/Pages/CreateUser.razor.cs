@@ -1,23 +1,32 @@
 ﻿using AppBank.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
+using AppBank.Services;
 
 namespace AppBank.Pages
 {
-    public partial class CreateUser
+    public partial class CreateUser : ComponentBase
     {
-        [Parameter] public User User { get; set; }
-        [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+        [Parameter]
+        public User User { get; set; } = new User();
 
-        private async Task OnValidSubmitHandler(EditContext editContext)
+        [Parameter]
+        public EventCallback<EditContext> Submit{ get; set; }
+
+        [CascadingParameter]
+        private EditContext? editContext { get; set; }
+
+
+        private async Task OnValidSubmit()
         {
-            if (editContext.Validate())
+            var result = await CoreAccountService.CreateUser(User);
+            if (result)
             {
-                await OnValidSubmit.InvokeAsync(editContext);
+                Console.WriteLine("User created successfully");
             }
             else
             {
-                Console.WriteLine("Validation error: Please fill in the right details.");
+                Console.WriteLine("Failed to create user");
             }
         }
     }

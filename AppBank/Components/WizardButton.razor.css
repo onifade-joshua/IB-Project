@@ -1,0 +1,12 @@
+﻿d-flex {
+    justify-content: flex-end;
+    margin-top: 3.5rem;
+}
+.btn1 {
+    margin-right: 10px;
+    color: #fff;
+}
+.btn2 {
+    margin-left: 10px;
+    color: #fff;
+}

@@ -1,21 +1,98 @@
-﻿using AppBank.Components;
-using AppBank.Models;
+﻿using AppBank.Models;
+using AppBank.Components;
+using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AppBank.Interfaces;
+using AppBank.Services;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace AppBank.Pages
 {
-	public partial class StepControl
-	{
-        User User = new User();
-        public Wizard wizard;
-        private List<WizardStep> wizardSteps;
+    public partial class StepControl
+    {
+        private User User = new User();
+        private EditContext editContext;
+        private Wizard? wizard;
+        private List<WizardStep>? wizardSteps;
         private bool prevDisabled;
         private bool nextDisabled;
 
+        [Inject]
+        public IAlertManager? AlertManager { get; set; }
+
+        [Inject]
+        public NavigationManager? NavigationManager { get; set; }
+
+        [Inject]
+        public ICoreAccountService? CoreAccountService { get; set; }
+
+        protected override void OnInitialized()
+        {
+            editContext = new EditContext(User);
+            wizardSteps = new List<WizardStep>
+        {
+            new WizardStep
+            {
+                Index = 0,
+                Title = "Create User",
+                Model = User,
+                Content = (builder) =>
+                {
+                    builder.OpenComponent<CreateUser>(0);
+                    builder.AddAttribute(1, "User", User);
+                    builder.CloseComponent();
+                }
+            },
+            new WizardStep
+            {
+                Index = 1,
+                Title = "Add Customer ID & Account",
+                Content = (builder) =>
+                {
+                    builder.OpenComponent<AddAccount>(0);
+                    builder.AddAttribute(1, "User", User);
+                    builder.CloseComponent();
+                }
+            },
+            new WizardStep
+            {
+                Index = 2,
+                Title = "Configure User Account",
+                Content = (builder) =>
+                {
+                    builder.OpenComponent<ConfigureAccount>(0);
+                    builder.CloseComponent();
+                }
+            },
+            new WizardStep
+            {
+                Index = 3,
+                Title = "Confirmation Review",
+                Content = (builder) =>
+                {
+                    builder.OpenComponent<ConfirmationReview>(0);
+                    builder.AddAttribute(1, "User", User);
+                    builder.CloseComponent();
+                }
+            }
+        };
+
+            base.OnInitialized();
+        }
+
+        private async Task OnWizardNext()
+        {
+            AlertManager?.Show("User created successfully.", "Success", "lightgreen");
+        }
+
         private void Previous()
         {
-            wizard?.Previous();
-            UpdateBar();
+            if (wizard != null && wizard.ActiveIndex > 0)
+            {
+                wizard.Previous();
+                UpdateBar();
+            }
         }
 
         private async Task Next()
@@ -25,8 +102,16 @@ namespace AppBank.Pages
 
             if (editContext.Validate())
             {
-                wizard?.Next();
-                UpdateBar();
+                if (wizard.ActiveIndex < wizardSteps.Count - 1)
+                {
+                    await wizard.Next();
+                    UpdateBar();
+                }
+                else
+                {
+                    // Save to database
+                    await SaveData();
+                }
             }
             else
             {
@@ -34,25 +119,26 @@ namespace AppBank.Pages
             }
         }
 
-        private bool IsValidForm()
+        private async Task SaveData()
         {
-            var currentStep = wizardSteps[wizard.ActiveIndex];
-            var editContext = new EditContext(currentStep.Model);
-            var isValid = editContext.Validate();
-
-            if (!isValid)
+            var result = await CoreAccountService.CreateUser(User);
+            if (result)
             {
-                Console.WriteLine("Form is not valid. Please check the input.");
+                AlertManager?.Show("User created successfully.", "Success", "lightgreen");
             }
-
-            return isValid;
+            else
+            {
+                AlertManager?.Show("Failed to create user.", "Error", "lightcoral");
+            }
         }
-
 
         private void UpdateBar()
         {
-            prevDisabled = wizard.ActiveIndex <= 1;
-            nextDisabled = wizard.ActiveIndex >= wizardSteps.Count - 1;
+            if (wizard != null)
+            {
+                prevDisabled = wizard.ActiveIndex == 0;
+                nextDisabled = wizard.ActiveIndex == wizardSteps.Count - 1;
+            }
         }
 
         private async Task OnValidSubmitHandler(EditContext editContext)

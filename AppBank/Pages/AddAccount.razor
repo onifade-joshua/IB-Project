@@ -2,17 +2,18 @@
 @inherits LayoutComponentBase
 @using AppBank.Models
 @using AppBank.Components
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
-
+@using AppBank.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 <div class="container mt-4">
     <div class="row d-flex mt-3">
         <div class="col-md-3">
-
-            <EditForm Model="@user">
+            <EditForm Model="@Account">
                 <DataAnnotationsValidator />
                 <div class="form-group mb-2 mr-2">
-                    <InputNumber @bind-Value=user.CustomerId class="form-control" id="AddCutomerId" />
+                    <InputText @bind-Value="Account.NewCustomerId" class="form-control" id="NewCustomerId" />
                 </div>
             </EditForm>
         </div>
@@ -23,18 +24,20 @@
         </div>
 
         <div class="col-md-3 mt-1">
-            <EditForm Model="@user">
+            <EditForm Model="@Account">
                 <DataAnnotationsValidator />
                 <div class="form-group mb-2 mr-2">
                     <div class="input-group">
-                        <InputSelect @bind-Value=user.CustomerId class="form-control" id="AddCustomerId">
-                            <option value="594567">594567</option>
-                            <option value="114550">114550</option>
-                            <option value="204780">204780</option>
+                        <InputSelect @bind-Value="SelectedCustomerId" class="form-control" id="SelectCustomerId" @onchange="OnCustomerIdChanged">
+                            <option value=""> - Select ID - </option>
+                            @foreach (var customerId in CustomerIds)
+                            {
+                                <option value="@customerId">@customerId</option>
+                            }
                         </InputSelect>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <i class="bi bi-chevron-down"></i> 
+                                <i class="bi bi-chevron-down"></i>
                             </div>
                         </div>
                     </div>
@@ -50,8 +53,6 @@
     </div>
 
     <div class="mt-4" style="padding:0; margin:0;">
-        <AvailableAccount />
+        <AvailableAccount SelectedCustomerId="@SelectedCustomerId" />
     </div>
 </div>
-
-

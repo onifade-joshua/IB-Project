@@ -8,7 +8,7 @@ namespace AppBank.Models
 		[Required]
 		public int Index { get; set; }
 		[Required]
-		public string Title { get; set; } = String.Empty;
+		public string Title { get; set; } = string.Empty;
 
 		public RenderFragment? Content { get; set; }
 		public bool IsActive { get; set; }

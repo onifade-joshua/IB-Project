@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using AppBank.Models;
 using Microsoft.AspNetCore.Components;
@@ -8,30 +8,84 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace AppBank.Components
 {
-	public partial class Wizard
-	{
-        [Parameter] public List<WizardStep> Steps { get; set; }
+    public partial class Wizard : ComponentBase
+    {
+       
+        [Parameter]
+        public User User { get; set; } = new User();
+
+        [Parameter]
+        public List<WizardStep>? Steps { get; set; }
+
         public int ActiveIndex { get; private set; } = 0;
 
-        private bool prevDisabled => ActiveIndex == 0;
-        private bool nextDisabled => !ValidateForm();
+        private EditContext? editContext;
 
-        private WizardStep CurrentStep => Steps[ActiveIndex];
+        private bool prevDisabled => ActiveIndex == 0;
+
+        public WizardStep CurrentStep => Steps?[ActiveIndex] ?? throw new InvalidOperationException("Steps cannot be null");
+
+        [Parameter]
+        public EventCallback OnLastStepCompleted { get; set; }
+
+        private bool showModal;
+        
+        protected override void OnInitialized()
+        {
+            if (Steps != null && Steps.Any())
+            {
+                InitializeEditContext();
+            }
+        }
+
+        private void InitializeEditContext()
+        {
+            if (CurrentStep?.Model == null)
+            {
+                throw new ArgumentNullException(nameof(CurrentStep.Model), "Model cannot be null");
+            }
+
+            editContext = new EditContext(CurrentStep.Model);
+            editContext.OnFieldChanged += (sender, eventArgs) => StateHasChanged();
+        }
 
         public async Task Next()
         {
-            if (!nextDisabled)
+            if (editContext != null && editContext.Validate())
             {
                 if (ActiveIndex < Steps.Count - 1)
                 {
                     ActiveIndex++;
+                    InitializeEditContext();
                     StateHasChanged();
                 }
                 else
                 {
-                    Console.WriteLine("Step's completed!");
+                    await SaveData();
                 }
             }
+            else
+            {
+                Console.WriteLine("Validation error: Please fill in the right details.");
+            }
+        }
+
+        private async Task SaveData()
+        {
+            var result = await CoreAccountService.CreateUser(User);
+            if (result)
+            {
+                AlertManager.Show("User created successfully. ", "Success", "lightgreen");
+                Console.WriteLine("User created successfully.");
+                showModal = true;
+                await OnLastStepCompleted.InvokeAsync(null);
+            }
+            else
+            {
+                AlertManager.Show("Failed to create user.", "Error", "lightcoral");
+                Console.WriteLine("Failed to create user.");
+            }
+            StateHasChanged();
         }
 
         public void Previous()
@@ -39,38 +93,9 @@ namespace AppBank.Components
             if (ActiveIndex > 0)
             {
                 ActiveIndex--;
+                InitializeEditContext();
+                StateHasChanged();
             }
-        }
-
-        private bool ValidateForm()
-        {
-            var editContext = new EditContext(CurrentStep.Model);
-
-            // Check if the form is valid
-            if (!editContext.Validate())
-            {
-                // If the form is not valid, display validation messages
-                editContext.OnValidationStateChanged += (sender, eventArgs) =>
-                {
-                    StateHasChanged();
-                };
-                return false;
-            }
-
-            // Check if there are any required fields that are empty
-            foreach (var prop in CurrentStep.Model.GetType().GetProperties())
-            {
-                if (prop.GetCustomAttributes(typeof(RequiredAttribute), true).Length > 0)
-                {
-                    var value = prop.GetValue(CurrentStep.Model);
-                    if (value == null || (value is string && string.IsNullOrWhiteSpace((string)value)))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
     }
 }

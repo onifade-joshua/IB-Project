@@ -1,0 +1,35 @@
+﻿
+/*.toast-container {
+    position: fixed;
+    top: 30%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+}
+
+.toast {
+    min-height: 150px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.toast-body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-go-home {
+    margin-top: 10px;
+    color: #fff;
+}
+
+.btn-go-home {
+    background-color: #4B70F5;
+}
+*/
