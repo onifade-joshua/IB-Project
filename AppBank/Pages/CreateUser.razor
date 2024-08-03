@@ -11,32 +11,32 @@
 <div class="" style="width: 350px; min-height: 90vh;">
     <div class="form-group mb-1">
         <label for="FirstName" class="mb-2">First Name</label>
-        <input type="text" @bind=User.FirstName readonly class="form-control" id="FirstName" autocomplete="off" />
+        <input type="text" @bind=User.FirstName  class="form-control" id="FirstName" autocomplete="off" />
         <ValidationMessage For="@(() => User.FirstName)" style="color:red;" />
     </div>
     <div class="form-group mb-1">
         <label for="LastName" class="mb-2">Last Name</label>
-        <input type="text" @bind=User.LastName readonly class="form-control" id="LastName" autocomplete="off" />
+        <input type="text" @bind=User.LastName  class="form-control" id="LastName" autocomplete="off" />
         <ValidationMessage For="@(() => User.LastName)" style="color:red;" />
     </div>
     <div class="form-group mb-1">
         <label for="MiddleName" class="mb-2">Middle Name</label>
-        <input type="text" @bind=User.MiddleName readonly class="form-control" id="MiddleName" autocomplete="off" />
+        <input type="text" @bind=User.MiddleName class="form-control" id="MiddleName" autocomplete="off" />
         <ValidationMessage For="@(() => User.MiddleName)" style="color:red;" />
     </div>
     <div class="form-group mb-1">
         <label for="Email" class="mb-2">Email</label>
-        <input type="text" @bind=User.Email readonly class="form-control" id="Email" autocomplete="off" />
+        <input type="text" @bind=User.Email  class="form-control" id="Email" autocomplete="off" />
         <ValidationMessage For="@(() => User.Email)" style="color:red;" />
     </div>
     <div class="form-group mb-2">
         <label for="PhoneNo" class="mb-2">Phone Number</label>
-        <input type="number" @bind=User.PhoneNo readonly class="form-control" id="PhoneNo" placeholder="+2348135576994" autocomplete="off" />
+        <input type="text" @bind=User.PhoneNo class="form-control" id="PhoneNo" placeholder="+2348135576994" autocomplete="off" />
         <ValidationMessage For="@(() => User.PhoneNo)" style="color:red;" />
     </div>
     <div class="col-auto mb-1">
         <label for="MemorableWord" class="mb-2">Memorable Word</label>
-        <input type="text" @bind=User.MemorableWord readonly class="form-control" id="MemorableWord" autocomplete="off" />
+        <input type="text" @bind=User.MemorableWord  class="form-control" id="MemorableWord" autocomplete="off" />
         <ValidationMessage For="@(() => User.MemorableWord)" style="color:red;" />
     </div>
     <div class="col-auto mb-1">
