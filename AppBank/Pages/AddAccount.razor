@@ -13,7 +13,8 @@
             <EditForm Model="@Account">
                 <DataAnnotationsValidator />
                 <div class="form-group mb-2 mr-2">
-                    <InputText @bind-Value="Account.NewCustomerId" class="form-control" id="NewCustomerId" />
+                   
+                    <input @bind="Account.NewCustomerId" class="form-control" type="number" placeholder="Default input" aria-label="default input" id="NewCustomerId">
                 </div>
             </EditForm>
         </div>
@@ -28,18 +29,14 @@
                 <DataAnnotationsValidator />
                 <div class="form-group mb-2 mr-2">
                     <div class="input-group">
-                        <InputSelect @bind-Value="SelectedCustomerId" class="form-control" id="SelectCustomerId" @onchange="OnCustomerIdChanged">
-                            <option value=""> - Select ID - </option>
+                        <select @bind="SelectedCustomerId" class="form-select" aria-label="Default select">
+                            <option selected>Select Customer ID</option>
                             @foreach (var customerId in CustomerIds)
                             {
                                 <option value="@customerId">@customerId</option>
                             }
-                        </InputSelect>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <i class="bi bi-chevron-down"></i>
-                            </div>
-                        </div>
+                        </select>
+                       
                     </div>
                 </div>
             </EditForm>
